@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Machine Learning Hub</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 95%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 8px;
+            background: #667eea;
+            color: white;
+            cursor: pointer;
+        }
+
+        .green {
+            background: #48bb78;
+        }
+
+        .red {
+            background: #e53e3e;
+        }
+
+        #auth,
+        #dashboard {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Machine Learning Hub</h2>
+        <p>Simple ML platform</p>
+
+        <button onclick="showLogin()">Get Started</button>
+
+        <!-- LOGIN -->
+        <div id="auth">
+            <h3>Login / Sign Up</h3>
+            <input type="email" id="email" placeholder="Email">
+            <input type="password" id="password" placeholder="Password">
+
+            <button class="green" onclick="signUp()">Sign Up</button>
+            <button onclick="login()">Login</button>
+
+            <p id="message"></p>
+        </div>
+
+        <!-- DASHBOARD -->
+        <div id="dashboard">
+            <h3>Welcome 🎉</h3>
+            <p id="userEmail"></p>
+            <button class="red" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@1"></script>
+
+    <script>
+        const client = supabase.createClient(
+            "https://rgkewgzuifcmzuvwcdsm.supabase.co",
+            "sb_publishable_EuLKmJbH6Mo1fHHPFDVLpA_AUnfwBfy"
+
+        );
+
+        function showLogin() {
+            document.getElementById("auth").style.display = "block";
+        }
+
+        async function signUp() {
+            const email = emailInput();
+            const password = passInput();
+
+            const { error } = await client.auth.signUp({ email, password });
+
+            showMessage(error ? error.message : "Sign up successful!");
+        }
+
+        async function login() {
+            const email = emailInput();
+            const password = passInput();
+
+            const { data, error } = await client.auth.signIn({ email, password });
+
+            if (error) {
+                showMessage(error.message);
+            } else {
+                document.getElementById("auth").style.display = "none";
+                document.getElementById("dashboard").style.display = "block";
+                document.getElementById("userEmail").innerText =
+                    "Logged in as: " + data.user.email;
+            }
+        }
+
+        async function logout() {
+            await client.auth.signOut();
+            document.getElementById("dashboard").style.display = "none";
+            document.getElementById("auth").style.display = "block";
+            showMessage("Logged out!");
+        }
+
+        function emailInput() {
+            return document.getElementById("email").value;
+        }
+
+        function passInput() {
+            return document.getElementById("password").value;
+        }
+
+        function showMessage(msg) {
+            document.getElementById("message").innerText = msg;
+        }
+    </script>
+
+</body>
+
+</html>
