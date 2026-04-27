@@ -8,8 +8,10 @@
         body {
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #1E3A5F;
-            color: #d1d1d1;
+            background-color: #eef1f4;
+            /* Navy Blue */
+            color: #FFFFFF;
+            /* White */
         }
 
         .container {
@@ -24,7 +26,7 @@
         h1,
         h2,
         h3 {
-            color: #6d7dd4;
+            color: #FFFFFF;
             text-transform: uppercase;
             font-weight: 900;
         }
@@ -35,16 +37,16 @@
             padding: 12px;
             margin: 10px 0;
             border-radius: 6px;
-            border: 1px solid #333;
-            background: #F5F7FA;
-            color: rgb(0, 0, 0);
+            border: 1px solid #00509E;
+            background: #FFFFFF;
+            color: #001F3F;
             box-sizing: border-box;
             font-family: inherit;
         }
 
         input:focus,
         textarea:focus {
-            border-color: #7f7d7d65;
+            border-color: #007BFF;
             outline: none;
         }
 
@@ -54,7 +56,8 @@
             margin-top: 10px;
             border: none;
             border-radius: 6px;
-            background: #a7bcff;
+            background: #007BFF;
+            /* Blue */
             color: white;
             font-weight: bold;
             text-transform: uppercase;
@@ -63,29 +66,33 @@
         }
 
         button:hover {
-            background: #5872c7;
+            background: #0056b3;
         }
 
         button.secondary {
-            background: #76bce4;
+            background: #003366;
+            /* Secondary Navy Blue */
+            border: 1px solid #007BFF;
         }
 
         button.secondary:hover {
-            background: #4c90f6;
+            background: #00509E;
         }
 
         .card {
-            background: #101733;
-            border: 1px solid #222;
+            background: #003366;
+            /* Lighter Navy Blue */
+            border: 1px solid #00509E;
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 20px;
             text-align: left;
             transition: border-color 0.3s;
+            color: #FFFFFF;
         }
 
         .card:hover {
-            border-color: #f5eff6;
+            border-color: #007BFF;
         }
 
         .article-title {
@@ -93,17 +100,17 @@
             font-weight: bold;
             margin-bottom: 10px;
             cursor: pointer;
-            color: #fff;
+            color: #FFFFFF;
             transition: color 0.2s;
         }
 
         .article-title:hover {
-            color: #3e41e5;
+            color: #007BFF;
         }
 
         .views-badge {
-            background: rgba(62, 134, 229, 0.2);
-            color: #429af8;
+            background: rgba(255, 255, 255, 0.2);
+            color: #FFFFFF;
             padding: 4px 8px;
             border-radius: 4px;
             font-size: 0.8em;
@@ -123,16 +130,16 @@
         }
 
         .comment-box {
-            background: #0a0a0a;
+            background: #002244;
             padding: 15px;
             margin-top: 10px;
             border-radius: 6px;
-            border: 1px solid #222;
+            border: 1px solid #00509E;
         }
 
         .reply-box {
             margin-left: 20px;
-            border-left: 2px solid #3e86e5;
+            border-left: 2px solid #007BFF;
             padding-left: 15px;
             margin-top: 10px;
         }
@@ -163,9 +170,13 @@
     <div class="container">
         <!-- LANDING PAGE -->
         <div id="landing">
-            <h1>Machine Learning Hub</h1>
-            <p>Premium Machine Learning Articles & Discussions</p>
-            <button onclick="showPage('auth')">Get Started</button>
+            <div
+                style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 60vh;">
+                <h1 style="font-size: 3em; margin-bottom: 10px;">Machine Learning Hub</h1>
+                <p style="font-size: 1.2em; color: #E0E0E0;">Premium Machine Learning Articles & Discussions</p>
+                <button onclick="showPage('auth')" style="max-width: 250px; font-size: 1.1em; padding: 15px;">Get
+                    Started</button>
+            </div>
         </div>
 
         <!-- LOGIN / SIGNUP -->
@@ -193,10 +204,10 @@
             </div>
 
             <div style="text-align: left;">
-                <h3 style="border-bottom: 1px solid #333; padding-bottom: 10px;">Top Articles</h3>
+                <h3 style="border-bottom: 1px solid #00509E; padding-bottom: 10px;">Top Articles</h3>
                 <div id="top-articles-list"></div>
 
-                <h3 style="border-bottom: 1px solid #333; padding-bottom: 10px; margin-top: 40px;">All Articles</h3>
+                <h3 style="border-bottom: 1px solid #00509E; padding-bottom: 10px; margin-top: 40px;">All Articles</h3>
                 <div id="all-articles-list"></div>
             </div>
 
@@ -219,8 +230,9 @@
                         <button class="btn-small secondary" onclick="editArticle()" style="margin:0;">✏️ Edit</button>
                         <button class="btn-small" onclick="deleteArticle()" style="margin:0; background: #c53030;">🗑️
                             Delete</button>
-                        <button class="btn-small" onclick="copyLink()" style="margin:0;">Copy Link</button>
-                        <button class="btn-small" onclick="likeArticle()" style="margin:0; background: #67c0f8;">❤️
+                        <button class="btn-small" onclick="copyLink()" style="margin:0; background: #0056b3;">Copy
+                            Link</button>
+                        <button class="btn-small" onclick="likeArticle()" style="margin:0; background: #007BFF;">❤️
                             Like</button>
                     </div>
                 </div>
