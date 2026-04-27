@@ -3,57 +3,157 @@
 
 <head>
     <title>Machine Learning Hub</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             margin: 0;
-            font-family: Arial;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1E3A5F;
+            color: #d1d1d1;
         }
 
         .container {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            width: 300px;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
             text-align: center;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            box-sizing: border-box;
         }
 
-        input {
-            width: 90%;
-            padding: 10px;
-            margin: 8px 0;
-            border-radius: 8px;
-            border: 1px solid #ccc;
+        h1,
+        h2,
+        h3 {
+            color: #6d7dd4;
+            text-transform: uppercase;
+            font-weight: 900;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid #333;
+            background: #F5F7FA;
+            color: rgb(0, 0, 0);
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #7f7d7d65;
+            outline: none;
         }
 
         button {
-            width: 95%;
-            padding: 10px;
+            width: 100%;
+            padding: 14px;
             margin-top: 10px;
             border: none;
-            border-radius: 8px;
-            background: #667eea;
+            border-radius: 6px;
+            background: #a7bcff;
             color: white;
+            font-weight: bold;
+            text-transform: uppercase;
             cursor: pointer;
+            transition: background 0.3s;
         }
 
-        .green {
-            background: #48bb78;
+        button:hover {
+            background: #5872c7;
         }
 
-        .red {
-            background: #e53e3e;
+        button.secondary {
+            background: #76bce4;
         }
 
+        button.secondary:hover {
+            background: #4c90f6;
+        }
+
+        .card {
+            background: #101733;
+            border: 1px solid #222;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: left;
+            transition: border-color 0.3s;
+        }
+
+        .card:hover {
+            border-color: #f5eff6;
+        }
+
+        .article-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            cursor: pointer;
+            color: #fff;
+            transition: color 0.2s;
+        }
+
+        .article-title:hover {
+            color: #3e41e5;
+        }
+
+        .views-badge {
+            background: rgba(62, 134, 229, 0.2);
+            color: #429af8;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        /* Navigation between 'pages' */
+        #landing,
         #auth,
-        #dashboard {
+        #dashboard,
+        #article-view {
             display: none;
+        }
+
+        #landing {
+            display: block;
+        }
+
+        .comment-box {
+            background: #0a0a0a;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 6px;
+            border: 1px solid #222;
+        }
+
+        .reply-box {
+            margin-left: 20px;
+            border-left: 2px solid #3e86e5;
+            padding-left: 15px;
+            margin-top: 10px;
+        }
+
+        .btn-small {
+            width: auto;
+            padding: 6px 12px;
+            font-size: 0.8em;
+            margin: 5px 0;
+        }
+
+        #message {
+            margin-top: 15px;
+            color: #e53e3e;
+            font-weight: bold;
+        }
+
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
     </style>
 </head>
@@ -61,99 +161,444 @@
 <body>
 
     <div class="container">
-
         <!-- LANDING PAGE -->
         <div id="landing">
-            <h2>Machine Learning Hub</h2>
-            <p>Simple Machine Learning platform</p>
-            <button onclick="showLogin()">Get Started</button>
+            <h1>Machine Learning Hub</h1>
+            <p>Premium Machine Learning Articles & Discussions</p>
+            <button onclick="showPage('auth')">Get Started</button>
         </div>
 
-        <!-- LOGIN -->
+        <!-- LOGIN / SIGNUP -->
         <div id="auth">
-            <h3>Login / Sign Up</h3>
+            <h2>Login / Sign Up</h2>
             <input type="email" id="email" placeholder="Email">
             <input type="password" id="password" placeholder="Password">
-
-            <button class="green" onclick="signUp()">Sign Up</button>
+            <button class="secondary" onclick="signUp()">Sign Up</button>
             <button onclick="login()">Login</button>
-
             <p id="message"></p>
         </div>
 
-        <!-- DASHBOARD -->
+        <!-- DASHBOARD (ARTICLES LIST) -->
         <div id="dashboard">
-            <h3>Welcome 🎉</h3>
-            <p id="userEmail"></p>
-            <button class="red" onclick="logout()">Logout</button>
+            <h2 style="font-size: 2.5em; margin-bottom: 5px;">Dashboard</h2>
+            <p id="userEmail" style="color: #888; margin-bottom: 30px;"></p>
+
+            <div class="card">
+                <h3>Create New Article</h3>
+                <input type="text" id="new-article-title" placeholder="Article Title">
+                <input type="url" id="new-article-external-url"
+                    placeholder="External URL (Optional - e.g. https://medium.com/...)">
+                <textarea id="new-article-content" rows="4" placeholder="Write your content here..."></textarea>
+                <button onclick="createArticle()">Publish Article</button>
+            </div>
+
+            <div style="text-align: left;">
+                <h3 style="border-bottom: 1px solid #333; padding-bottom: 10px;">Top Articles</h3>
+                <div id="top-articles-list"></div>
+
+                <h3 style="border-bottom: 1px solid #333; padding-bottom: 10px; margin-top: 40px;">All Articles</h3>
+                <div id="all-articles-list"></div>
+            </div>
+
+            <button class="secondary" onclick="logout()" style="margin-top: 40px;">Logout</button>
         </div>
 
+        <!-- SINGLE ARTICLE VIEW -->
+        <div id="article-view">
+            <button class="secondary btn-small" onclick="loadDashboard()"
+                style="margin-bottom: 20px; float:left;">&larr; Back to Dashboard</button>
+            <div style="clear:both;"></div>
+
+            <div class="card" style="padding: 30px;" id="article-display-card">
+                <div class="flex-between">
+                    <h1 id="article-title" style="margin: 0; font-size: 2.5em; text-transform:none;"></h1>
+                    <div style="display:flex; gap:10px;">
+                        <a id="article-external-link" target="_blank"
+                            style="display:none; background:#fff; color:#000; font-weight:bold; padding:6px 12px; border-radius:4px; text-decoration:none; font-size:0.8em; text-transform:uppercase; align-items:center;">Read
+                            External</a>
+                        <button class="btn-small secondary" onclick="editArticle()" style="margin:0;">✏️ Edit</button>
+                        <button class="btn-small" onclick="deleteArticle()" style="margin:0; background: #c53030;">🗑️
+                            Delete</button>
+                        <button class="btn-small" onclick="copyLink()" style="margin:0;">Copy Link</button>
+                        <button class="btn-small" onclick="likeArticle()" style="margin:0; background: #67c0f8;">❤️
+                            Like</button>
+                    </div>
+                </div>
+                <div style="display:flex; gap: 10px; margin: 15px 0;">
+                    <span id="article-likes" class="views-badge" style="display:inline-block;"></span>
+                    <span id="article-views" class="views-badge" style="display:inline-block;"></span>
+                </div>
+                <p id="article-content" style="white-space: pre-wrap; font-size: 1.1em; line-height: 1.6; color:#ddd;">
+                </p>
+            </div>
+
+            <div class="card" style="padding: 30px; display:none;" id="article-edit-card">
+                <h3>Edit Article</h3>
+                <input type="text" id="edit-article-title" placeholder="Article Title">
+                <input type="url" id="edit-article-external-url" placeholder="External URL (Optional)">
+                <textarea id="edit-article-content" rows="10" placeholder="Write your content here..."></textarea>
+                <div style="display:flex; gap:10px; margin-top: 20px;">
+                    <button onclick="saveEditArticle()">Save Changes</button>
+                    <button class="secondary" onclick="cancelEditArticle()">Cancel</button>
+                </div>
+            </div>
+
+            <div class="card" id="article-comments-card">
+                <h3>Discussion</h3>
+                <div style="display:flex; gap: 10px; margin-bottom: 20px;">
+                    <input type="text" id="new-comment" placeholder="Add a comment...">
+                    <button class="btn-small" onclick="postComment()" style="margin:0; padding: 0 20px;">Post</button>
+                </div>
+                <div id="comments-list"></div>
+            </div>
+        </div>
     </div>
 
+    <!-- SUPABASE JS (v1) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@1"></script>
 
     <script>
         const client = supabase.createClient(
             "https://rgkewgzuifcmzuvwcdsm.supabase.co",
             "sb_publishable_EuLKmJbH6Mo1fHHPFDVLpA_AUnfwBfy"
-
         );
 
-        function showLogin() {
-            document.getElementById("auth").style.display = "block";
+        // --- NAVIGATION ---
+        function showPage(pageId) {
+            ['landing', 'auth', 'dashboard', 'article-view'].forEach(id => {
+                document.getElementById(id).style.display = id === pageId ? 'block' : 'none';
+            });
+            showMessage(""); // clear messages
         }
 
+        function showMessage(msg) {
+            document.getElementById("message").innerText = msg;
+        }
+
+        function emailInput() { return document.getElementById("email").value; }
+        function passInput() { return document.getElementById("password").value; }
+
+        // --- AUTH ---
         async function signUp() {
             const email = emailInput();
             const password = passInput();
-
-            const { error } = await client.auth.signUp({ email, password });
-
-            showMessage(error ? error.message : "Sign up successful!");
+            const { user, error } = await client.auth.signUp({ email, password });
+            if (error) {
+                showMessage(error.message);
+            } else {
+                showMessage("Sign up successful! Please login.");
+                // Track total users (Counter)
+                await client.rpc('increment_users');
+            }
         }
 
         async function login() {
             const email = emailInput();
             const password = passInput();
 
-            const { data, error } = await client.auth.signIn({ email, password });
+            const response = await client.auth.signIn({ email, password });
+            const error = response.error;
+            const user = response.user || (response.data && response.data.user);
 
             if (error) {
                 showMessage(error.message);
             } else {
-                document.getElementById("auth").style.display = "none";
-                document.getElementById("landing").style.display = "none";
-                document.getElementById("dashboard").style.display = "block";
+                // Track total logins (Counter)
+                await client.rpc('increment_logins');
 
-                document.getElementById("userEmail").innerText =
-                    "Logged in as: " + data.user.email;
+                document.getElementById("userEmail").innerText = "Logged in as: " + (user ? user.email : email);
+                loadDashboard();
             }
         }
 
-
         async function logout() {
             await client.auth.signOut();
-
-            document.getElementById("dashboard").style.display = "none";
-            document.getElementById("auth").style.display = "none";
-            document.getElementById("landing").style.display = "block";
-
+            showPage('landing');
             showMessage("Logged out!");
         }
 
-        function emailInput() {
-            return document.getElementById("email").value;
+        // --- DASHBOARD (ARTICLES) ---
+        async function loadDashboard() {
+            showPage('dashboard');
+
+            // Parallel loading for performance
+            loadTopArticles();
+            loadAllArticles();
         }
 
-        function passInput() {
-            return document.getElementById("password").value;
+        async function loadAllArticles() {
+            const { data, error } = await client.from('articles').select('*').order('created_at', { ascending: false });
+            const list = document.getElementById('all-articles-list');
+            list.innerHTML = '';
+            if (data && data.length > 0) {
+                data.forEach(art => {
+                    const externalLinkHtml = art.external_url
+                        ? `<a href="${art.external_url}" target="_blank" style="display:inline-block; margin-top:10px; background:#fff; color:#000; padding:6px 12px; border-radius:4px; text-decoration:none; font-weight:bold; font-size:0.8em; text-transform:uppercase;">Read External Article</a>`
+                        : '';
+
+                    list.innerHTML += `
+                        <div class="card">
+                            <div class="article-title" onclick="openArticle('${art.id}')">${art.title}</div>
+                            <p style="color:#aaa; font-size:0.9em; margin-bottom:10px;">${art.content.substring(0, 150)}...</p>
+                            <div style="display:flex; gap: 10px; font-size: 0.85em; margin-bottom: 10px;">
+                                <span class="views-badge">${art.likes || 0} Likes</span>
+                                <span class="views-badge">${art.views || 0} Views</span>
+                            </div>
+                            ${externalLinkHtml}
+                        </div>
+                    `;
+                });
+            } else {
+                list.innerHTML = "<p style='color:#666;'>No articles found.</p>";
+            }
         }
 
-        function showMessage(msg) {
-            document.getElementById("message").innerText = msg;
+        async function loadTopArticles() {
+            const { data, error } = await client.from('articles').select('*').order('views', { ascending: false }).limit(5);
+            const list = document.getElementById('top-articles-list');
+            list.innerHTML = '';
+            if (data && data.length > 0) {
+                data.forEach(art => {
+                    list.innerHTML += `
+                        <div class="card flex-between" style="cursor:pointer; padding: 15px;" onclick="openArticle('${art.id}')">
+                            <strong style="font-size:1.1em;">${art.title}</strong>
+                            <div>
+                                <span class="views-badge" style="margin-right: 5px;">${art.likes || 0} Likes</span>
+                                <span class="views-badge">${art.views || 0} Views</span>
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                list.innerHTML = "<p style='color:#666;'>No top articles.</p>";
+            }
         }
+
+        async function createArticle() {
+            const title = document.getElementById('new-article-title').value;
+            const content = document.getElementById('new-article-content').value;
+            const external_url = document.getElementById('new-article-external-url').value;
+            if (!title || !content) return alert("Please enter both title and content");
+
+            const { error } = await client.from('articles').insert([{ title, content, external_url: external_url || null }]);
+            if (error) {
+                alert("Error creating article: " + error.message);
+            } else {
+                document.getElementById('new-article-title').value = '';
+                document.getElementById('new-article-content').value = '';
+                document.getElementById('new-article-external-url').value = '';
+                loadDashboard();
+            }
+        }
+
+        // --- SINGLE ARTICLE VIEW & COMMENTS ---
+        let currentArticleId = null;
+        let currentExternalUrl = null;
+        let currentArticleLikes = 0;
+
+        async function openArticle(id) {
+            currentArticleId = id;
+            currentExternalUrl = null;
+            showPage('article-view');
+            document.getElementById('article-display-card').style.display = 'block';
+            if (document.getElementById('article-comments-card')) document.getElementById('article-comments-card').style.display = 'block';
+            if (document.getElementById('article-edit-card')) document.getElementById('article-edit-card').style.display = 'none';
+
+            document.getElementById('article-title').innerText = "Loading...";
+            document.getElementById('article-content').innerText = "";
+            document.getElementById('article-views').innerText = "";
+            document.getElementById('article-likes').innerText = "";
+            document.getElementById('article-external-link').style.display = "none";
+
+            // Increment views (Counter)
+            await client.rpc('increment_article_views', { article_id: id });
+
+            // Fetch specific article
+            const { data, error } = await client.from('articles').select('*').eq('id', id).single();
+            if (data) {
+                currentArticleLikes = data.likes || 0;
+                document.getElementById('article-title').innerText = data.title;
+                document.getElementById('article-views').innerText = (data.views + 1) + " Views";
+                document.getElementById('article-likes').innerText = currentArticleLikes + " Likes";
+                document.getElementById('article-content').innerText = data.content;
+
+                if (data.external_url) {
+                    currentExternalUrl = data.external_url;
+                    const extBtn = document.getElementById('article-external-link');
+                    extBtn.href = data.external_url;
+                    extBtn.style.display = "inline-flex";
+                }
+            }
+
+            loadComments();
+        }
+
+        function copyLink() {
+            const url = currentExternalUrl ? currentExternalUrl : (window.location.origin + window.location.pathname + "?article=" + currentArticleId);
+            navigator.clipboard.writeText(url);
+            alert("Shareable link copied to clipboard!\n" + url);
+        }
+
+        async function likeArticle() {
+            if (!currentArticleId) return;
+
+            currentArticleLikes++;
+            document.getElementById('article-likes').innerText = currentArticleLikes + " Likes";
+
+            const { error } = await client.rpc('increment_article_likes', { article_id: currentArticleId });
+            if (error) {
+                const { error: updateError } = await client.from('articles').update({ likes: currentArticleLikes }).eq('id', currentArticleId);
+                if (updateError) {
+                    console.error("Failed to update likes:", updateError);
+                    currentArticleLikes--;
+                    document.getElementById('article-likes').innerText = currentArticleLikes + " Likes";
+                    alert("Could not update like. Please make sure the 'likes' column exists in your database table.");
+                }
+            }
+        }
+
+        function editArticle() {
+            document.getElementById('article-display-card').style.display = 'none';
+            document.getElementById('article-comments-card').style.display = 'none';
+            document.getElementById('article-edit-card').style.display = 'block';
+
+            document.getElementById('edit-article-title').value = document.getElementById('article-title').innerText;
+            document.getElementById('edit-article-content').value = document.getElementById('article-content').innerText;
+            document.getElementById('edit-article-external-url').value = currentExternalUrl || "";
+        }
+
+        function cancelEditArticle() {
+            document.getElementById('article-display-card').style.display = 'block';
+            document.getElementById('article-comments-card').style.display = 'block';
+            document.getElementById('article-edit-card').style.display = 'none';
+        }
+
+        async function saveEditArticle() {
+            const title = document.getElementById('edit-article-title').value;
+            const content = document.getElementById('edit-article-content').value;
+            const external_url = document.getElementById('edit-article-external-url').value;
+
+            if (!title || !content) return alert("Title and content cannot be empty.");
+
+            const { error } = await client.from('articles').update({ title, content, external_url: external_url || null }).eq('id', currentArticleId);
+
+            if (error) {
+                alert("Error updating article: " + error.message);
+            } else {
+                cancelEditArticle();
+                openArticle(currentArticleId); // reload article
+            }
+        }
+
+        async function deleteArticle() {
+            if (!confirm("Are you sure you want to delete this article? This action cannot be undone.")) return;
+
+            const { error } = await client.from('articles').delete().eq('id', currentArticleId);
+            if (error) {
+                alert("Error deleting article: " + error.message);
+            } else {
+                alert("Article deleted.");
+                loadDashboard(); // return to dashboard
+            }
+        }
+
+        async function loadComments() {
+            const { data, error } = await client.from('comments').select('*').eq('article_id', currentArticleId).order('created_at', { ascending: true });
+            const list = document.getElementById('comments-list');
+            list.innerHTML = '';
+
+            if (data && data.length > 0) {
+                const parents = data.filter(c => !c.parent_id);
+                const replies = data.filter(c => c.parent_id);
+
+                parents.forEach(p => {
+                    const replyHTML = replies.filter(r => r.parent_id === p.id).map(r => `
+                        <div class="reply-box">
+                            <p style="margin:0; color:#ddd;">${r.content}</p>
+                            <div style="margin-top: 5px;">
+                                <button class="btn-small secondary" onclick="likeComment('${r.id}', ${r.likes || 0})" style="background: transparent; padding: 0; color: #888; border: none; font-size: 0.9em; cursor: pointer;">👍 ${r.likes || 0}</button>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    list.innerHTML += `
+                        <div class="comment-box text-left">
+                            <p style="margin-top:0;">${p.content}</p>
+                            <div style="display:flex; gap: 15px; align-items: center; margin-top: 8px;">
+                                <button class="btn-small secondary" onclick="likeComment('${p.id}', ${p.likes || 0})" style="background: transparent; padding: 0; margin: 0; color: #888; border: none; font-size: 0.9em; cursor: pointer;">👍 ${p.likes || 0}</button>
+                                <button class="btn-small secondary" onclick="toggleReplyForm('${p.id}')" style="margin: 0;">Reply</button>
+                            </div>
+                            <div id="reply-form-${p.id}" style="display:none; margin-top:10px;">
+                                <div style="display:flex; gap:10px;">
+                                    <input type="text" id="reply-input-${p.id}" placeholder="Write a reply...">
+                                    <button class="btn-small" onclick="postReply('${p.id}')" style="margin:0;">Send</button>
+                                </div>
+                            </div>
+                            ${replyHTML}
+                        </div>
+                    `;
+                });
+            } else {
+                list.innerHTML = "<p style='color:#666;'>No comments yet.</p>";
+            }
+        }
+
+        async function postComment() {
+            const content = document.getElementById('new-comment').value;
+            if (!content) return;
+            await client.from('comments').insert([{ article_id: currentArticleId, content, parent_id: null }]);
+            document.getElementById('new-comment').value = '';
+            loadComments();
+        }
+
+        function toggleReplyForm(commentId) {
+            const form = document.getElementById(`reply-form-${commentId}`);
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+
+        async function postReply(parentId) {
+            const content = document.getElementById(`reply-input-${parentId}`).value;
+            if (!content) return;
+            await client.from('comments').insert([{ article_id: currentArticleId, content, parent_id: parentId }]);
+            loadComments();
+        }
+
+        async function likeComment(commentId, currentLikes) {
+            const newLikes = currentLikes + 1;
+            const { error } = await client.rpc('increment_comment_likes', { comment_id: commentId });
+            if (error) {
+                const { error: updateError } = await client.from('comments').update({ likes: newLikes }).eq('id', commentId);
+                if (updateError) {
+                    console.error("Failed to update comment likes:", updateError);
+                    alert("Could not update comment like. Please ensure the 'likes' column exists in your comments table.");
+                    return;
+                }
+            }
+            loadComments();
+        }
+
+        // Handle URL parameters for direct link sharing
+        window.onload = () => {
+            const params = new URLSearchParams(window.location.search);
+            const articleId = params.get('article');
+
+            // Check session via local storage token since v1 session() might be async in some setups or rely on localstorage
+            const supabaseToken = localStorage.getItem('supabase.auth.token');
+
+            if (articleId) {
+                if (supabaseToken) {
+                    openArticle(articleId);
+                } else {
+                    showPage('auth');
+                    showMessage("Please login to view this article.");
+                }
+            } else if (supabaseToken) {
+                // Mock login state recovery
+                document.getElementById("userEmail").innerText = "Welcome back!";
+                loadDashboard();
+            }
+        };
     </script>
-
 </body>
 
 </html>
